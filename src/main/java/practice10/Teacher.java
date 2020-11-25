@@ -1,9 +1,6 @@
 package practice10;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Teacher extends Person implements Observer {
@@ -46,13 +43,13 @@ public class Teacher extends Person implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         Student student=(Student) arg;
-        List<Klass> filer_classes=classes.stream().filter(klass->klass.getLeader()==arg).collect(Collectors.toList());
-        if(!filer_classes.isEmpty()){
-            System.out.print(String.format("I am %s. I know %s become Leader of Class %d.\n",this.getName(),student.getName(),filer_classes.get(0).getNumber()));
+        Optional<Klass> filer_class=classes.stream().filter(klass->klass.getLeader()==arg).findFirst();
+        if(filer_class.isPresent()){
+            System.out.print(String.format("I am %s. I know %s become Leader of Class %d.\n",this.getName(),student.getName(),filer_class.get().getNumber()));
             return;
         }
-        List<Klass> filer_classes2=classes.stream().filter(klass->klass.getMembers().get(klass.getMembers().size()-1)==arg).collect(Collectors.toList());
-        System.out.print(String.format("I am %s. I know %s has joined Class %d.\n",this.getName(),student.getName(),filer_classes2.get(0).getNumber()));
+        Klass filer_class2=classes.stream().filter(klass->klass.getMembers().get(klass.getMembers().size()-1)==arg).findFirst().get();
+        System.out.print(String.format("I am %s. I know %s has joined Class %d.\n",this.getName(),student.getName(),filer_class2.getNumber()));
 
 
     }
