@@ -30,7 +30,7 @@ public class Teacher extends Person {
     }
 
     public boolean isTeaching(Student student) {
-        return classes.stream().filter(klass->student.getKlass()==klass).count()>0?true:false;
+        return classes.stream().filter(klass -> klass.isIn(student)).count() > 0;
     }
 
 
